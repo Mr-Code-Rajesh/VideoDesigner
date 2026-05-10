@@ -5,6 +5,7 @@ import { FilmLoader } from "../loader/FilmLoader";
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 import { Navbar } from "../navbar/Navbar";
+import { CustomCursor } from "./CustomCursor";
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +46,12 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         )}
       </AnimatePresence>
 
-      {!isLoading && <Navbar />}
+      {!isLoading && (
+        <>
+          <Navbar />
+          <CustomCursor />
+        </>
+      )}
 
       <motion.main
         initial={{ opacity: 0 }}
