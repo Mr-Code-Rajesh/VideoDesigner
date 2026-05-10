@@ -11,7 +11,7 @@ const PROJECTS: Project[] = [
     category: "Commercial",
     year: "2024",
     imageUrl: "https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    videoUrl: "https://res.cloudinary.com/dl7h2uexp/video/upload/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
+    videoUrl: "https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto,f_auto,w_720/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
     span: "md:col-span-2 md:row-span-2"
   },
   {
@@ -29,7 +29,7 @@ const PROJECTS: Project[] = [
     category: "Music Videos",
     year: "2024",
     imageUrl: "https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    videoUrl: "https://res.cloudinary.com/dl7h2uexp/video/upload/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
+    videoUrl: "https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto,f_auto,w_720/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
     span: "md:col-span-1 md:row-span-2"
   },
   {

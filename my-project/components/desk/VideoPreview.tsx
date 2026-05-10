@@ -13,8 +13,9 @@ export const VideoPreview: React.FC = () => {
         loop
         muted
         playsInline
+        preload="metadata"
         className="h-full w-full object-cover"
-        src="https://res.cloudinary.com/dl7h2uexp/video/upload/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4"
+        src="https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto,f_auto,w_1920/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4"
       />
 
       {/* Technical HUD Overlays */}

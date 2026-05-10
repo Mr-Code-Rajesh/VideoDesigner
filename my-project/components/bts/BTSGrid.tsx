@@ -6,7 +6,7 @@ import { BTSCard } from "./BTSCard";
 const BTS_ITEMS = [
   {
     type: "video" as const,
-    url: "https://res.cloudinary.com/dl7h2uexp/video/upload/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
+    url: "https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto,f_auto,w_720/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4",
     caption: "Midnight Grading Session",
     location: "Studio A",
     span: "md:col-span-2 md:row-span-2"

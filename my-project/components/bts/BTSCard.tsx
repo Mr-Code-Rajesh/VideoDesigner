@@ -61,6 +61,8 @@ export const BTSCard: React.FC<BTSCardProps> = ({
           muted
           loop
           playsInline
+          preload="none"
+          style={{ willChange: "transform" }}
           className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0"
         />
       )}

@@ -59,6 +59,8 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({ project, onClick }
         muted
         loop
         playsInline
+        preload="none"
+        style={{ willChange: "transform" }}
         className={`
           absolute inset-0 h-full w-full object-cover transition-opacity duration-500
           ${isHovered ? "opacity-100" : "opacity-0"}

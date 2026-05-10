@@ -52,6 +52,8 @@ export const ReelCard: React.FC<ReelCardProps> = ({
         loop
         muted
         playsInline
+        preload="none"
+        style={{ willChange: "transform" }}
         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
 
