@@ -50,8 +50,8 @@ export const HeroContent: React.FC = () => {
     <div ref={containerRef} className="relative z-40 max-w-7xl mx-auto px-6 pt-12 pb-20 pointer-events-none">
       {/* Mouse Glow */}
       <motion.div
-        style={{ x: springX, y: springY }}
-        className="fixed top-0 left-0 w-[300px] h-[300px] bg-white/5 rounded-full blur-[100px] pointer-events-none z-0"
+        style={{ x: springX, y: springY, willChange: "transform" }}
+        className="fixed top-0 left-0 w-[250px] h-[250px] bg-white/5 rounded-full blur-[80px] pointer-events-none z-0"
       />
 
       <div className="relative z-10 pointer-events-auto">

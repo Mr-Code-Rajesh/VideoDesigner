@@ -15,13 +15,15 @@ export const HeroBackground: React.FC = () => {
     <div className="absolute inset-0 z-0 overflow-hidden bg-black">
       {/* Cinematic Video with Parallax */}
       <motion.video
-        style={{ y, scale }}
+        style={{ y, scale, willChange: "transform" }}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
+        poster="https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto:eco,f_auto,w_1280/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.jpg"
         className="h-full w-full object-cover opacity-70"
-        src="https://res.cloudinary.com/dl7h2uexp/video/upload/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4"
+        src="https://res.cloudinary.com/dl7h2uexp/video/upload/q_auto:eco,f_auto,w_1280/v1778164130/10253173-uhd_4096_2160_25fps_zv1m1b.mp4"
       />
 
       {/* Cinematic Overlays */}
