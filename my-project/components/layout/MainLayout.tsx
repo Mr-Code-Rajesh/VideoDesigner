@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FilmLoader } from "../loader/FilmLoader";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import Lenis from "lenis";
-import { Navbar } from "../navbar/Navbar";
 import { usePerformance } from "@/hooks/use-performance";
+
+// Dynamic imports to prevent SSR crashes and hydration mismatches
+const FilmLoader = dynamic(() => import("../loader/FilmLoader").then(mod => mod.FilmLoader), { ssr: false });
+const Navbar = dynamic(() => import("../navbar/Navbar").then(mod => mod.Navbar), { ssr: false });
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isMobile, intensity, isHydrated } = usePerformance();
@@ -27,28 +29,36 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
     // Wait for hydration and check if mobile
     if (!isHydrated || isMobile) return;
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-    
+    let lenisInstance: any;
     let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
 
-    rafId = requestAnimationFrame(raf);
+    const initLenis = async () => {
+      const { default: Lenis } = await import("lenis");
+      
+      lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+      
+      function raf(time: number) {
+        lenisInstance.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
+      rafId = requestAnimationFrame(raf);
+    };
+
+    initLenis();
     
     return () => {
-      lenis.destroy();
-      cancelAnimationFrame(rafId);
+      if (lenisInstance) lenisInstance.destroy();
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [isMobile, isHydrated]);
 
