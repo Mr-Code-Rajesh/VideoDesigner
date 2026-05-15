@@ -7,6 +7,8 @@ import { LoaderPercentage } from "./LoaderPercentage";
 import { useLoaderTimeline } from "../../hooks/useLoaderTimeline";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { usePerformance } from "@/hooks/use-performance";
+
 interface FilmLoaderProps {
   onLoadingComplete?: () => void;
 }
@@ -15,6 +17,7 @@ export const FilmLoader: React.FC<FilmLoaderProps> = ({ onLoadingComplete }) => 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const { isMobile } = usePerformance();
 
   useEffect(() => {
     setIsMounted(true);
@@ -68,7 +71,7 @@ export const FilmLoader: React.FC<FilmLoaderProps> = ({ onLoadingComplete }) => 
       {/* Floating Particles (Render only on client to avoid hydration mismatch) */}
       {isMounted && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
+          {[...Array(isMobile ? 8 : 15)].map((_, i) => (
             <motion.div
               key={i}
               initial={{ 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 export const useLoaderTimeline = (
@@ -9,7 +9,7 @@ export const useLoaderTimeline = (
 ) => {
   const timeline = useRef<gsap.core.Timeline | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {

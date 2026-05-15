@@ -12,6 +12,17 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const { isMobile, intensity } = usePerformance();
   const [isLoading, setIsLoading] = useState(true);
 
+  // Failsafe: Force hide loader after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        console.warn("Loader failsafe triggered");
+        setIsLoading(false);
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+
   // Lenis Smooth Scroll Setup
   useEffect(() => {
     // Disable smooth scroll on touch devices to improve performance
@@ -27,14 +38,14 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       touchMultiplier: 2,
       infinite: false,
     });
-    
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
 
     requestAnimationFrame(raf);
-    
+
     return () => {
       lenis.destroy();
     };
