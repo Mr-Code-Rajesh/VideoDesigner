@@ -26,6 +26,9 @@ export const GearCard: React.FC<GearCardProps> = ({
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+  
+  const spotlightX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
+  const spotlightY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -61,11 +64,12 @@ export const GearCard: React.FC<GearCardProps> = ({
       {/* Spotlight Effect */}
       <motion.div
         style={{
-          left: useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]),
-          top: useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]),
+          left: spotlightX,
+          top: spotlightY,
         }}
         className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/[0.05] rounded-full blur-[80px] opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-10"
       />
+
 
       <div className="relative z-20 flex h-full flex-col justify-between" style={{ transform: "translateZ(50px)" }}>
         <div>

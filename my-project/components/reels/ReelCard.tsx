@@ -63,14 +63,15 @@ export const ReelCard: React.FC<ReelCardProps> = ({
       {/* Glassmorphism Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
       
-      {/* Hover Overlay */}
+      {/* Hover Overlay - Simplified for hydration stability */}
       <AnimatePresence>
         {!isHovered && (!isHydrated || !isMobile) && (
           <motion.div
+            key="play-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 flex items-center justify-center bg-black/20" // Removed backdrop-blur for performance
+            className="absolute inset-0 flex items-center justify-center bg-black/20"
           >
             <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-md">
               <Play fill="white" className="ml-1 text-white" size={24} />
@@ -78,6 +79,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
+
 
       {/* Metadata Overlay */}
       <div className="absolute inset-x-0 bottom-0 p-6">

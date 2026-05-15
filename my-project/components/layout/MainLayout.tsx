@@ -73,7 +73,11 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   return (
     <>
       {/* Navbar only shows after hydration and loading */}
-      {isHydrated && !isLoading && <Navbar />}
+      <AnimatePresence mode="wait">
+        {isHydrated && !isLoading && (
+          <Navbar key="site-navbar-active" />
+        )}
+      </AnimatePresence>
 
       <main 
         className={`grow transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
@@ -81,10 +85,12 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         {children}
       </main>
 
-      {/* Loader Overlay - Standard conditional render to avoid AnimatePresence Node Mismatch #300 */}
-      {isLoading && isHydrated && (
-        <FilmLoader onLoadingComplete={() => setIsLoading(false)} />
-      )}
+      {/* Loader Overlay - Using key to ensure clean mount/unmount */}
+      <AnimatePresence>
+        {isLoading && isHydrated && (
+          <FilmLoader key="global-loader-active" onLoadingComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
     </>
   );
 };

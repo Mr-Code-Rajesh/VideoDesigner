@@ -14,11 +14,45 @@ const ALL_KEYWORDS = [
   { text: "Luxury", size: "text-3xl md:text-4xl", top: "10%", left: "45%", speed: 0.03 },
 ];
 
+interface FloatingWordProps {
+  word: typeof ALL_KEYWORDS[0];
+  springX: any;
+  springY: any;
+  scrollYProgress: any;
+}
+
+const FloatingWord: React.FC<FloatingWordProps> = ({ 
+  word, 
+  springX, 
+  springY, 
+  scrollYProgress 
+}) => {
+  const x = useTransform(springX, (val: number) => val * word.speed * 5);
+  const y = useTransform(springY, (val: number) => val * word.speed * 5);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.3, 0.1]);
+
+  return (
+    <motion.div
+      style={{
+        top: word.top,
+        left: word.left,
+        x,
+        y,
+        opacity,
+        willChange: "transform, opacity",
+      }}
+      className={`absolute font-bold tracking-tighter text-white select-none whitespace-nowrap ${word.size}`}
+    >
+      {word.text}
+    </motion.div>
+  );
+};
+
 export const CreativeDNA: React.FC = () => {
   const { isMobile, intensity, isHydrated } = usePerformance();
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Reduce keywords on mobile - wait for hydration to avoid mismatch
+  // Define keywords logic - keep it stable to avoid unnecessary re-renders
   const KEYWORDS = isHydrated && isMobile ? ALL_KEYWORDS.slice(0, 4) : ALL_KEYWORDS;
 
   const { scrollYProgress } = useScroll({
@@ -50,22 +84,15 @@ export const CreativeDNA: React.FC = () => {
       {/* Background Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_70%)] pointer-events-none" />
 
-      {/* Floating Keywords */}
+      {/* Floating Keywords - Refactored to sub-component to follow hook rules */}
       {KEYWORDS.map((word, i) => (
-        <motion.div
-          key={i}
-          style={{
-            top: word.top,
-            left: word.left,
-            x: useTransform(springX, (val) => val * word.speed * 5),
-            y: useTransform(springY, (val) => val * word.speed * 5),
-            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.3, 0.1]),
-            willChange: "transform, opacity",
-          }}
-          className={`absolute font-bold tracking-tighter text-white select-none whitespace-nowrap ${word.size}`}
-        >
-          {word.text}
-        </motion.div>
+        <FloatingWord 
+          key={word.text} // Using word.text as key is more stable than index
+          word={word}
+          springX={springX}
+          springY={springY}
+          scrollYProgress={scrollYProgress}
+        />
       ))}
 
       {/* Central Statement */}
@@ -128,3 +155,4 @@ export const CreativeDNA: React.FC = () => {
     </section>
   );
 };
+
