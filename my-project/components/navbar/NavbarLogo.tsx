@@ -23,11 +23,11 @@ export const NavbarLogo: React.FC = () => {
         <motion.div
           animate={{ x: ["-100%", "100%"] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
         />
       </div>
       <span className="font-mono text-xs tracking-[0.3em] text-white uppercase font-bold transition-opacity group-hover:opacity-80">
-        CREATIVE<span className="text-white/40 font-light ml-1">STUDIO</span>
+        CR7<span className="text-white/40 font-light ml-1">STUDIO</span>
       </span>
     </Link>
   );

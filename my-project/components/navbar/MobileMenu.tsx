@@ -27,7 +27,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex flex-col bg-black/90 backdrop-blur-2xl lg:hidden"
+          className="fixed inset-0 z-100 flex flex-col bg-black/90 backdrop-blur-2xl lg:hidden"
         >
           {/* Close Button */}
           <div className="flex h-20 items-center justify-end px-6">
@@ -65,7 +65,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Footer Decoration */}
-          <div className="absolute bottom-10 left-10 h-[1px] w-1/3 bg-white/10" />
+          <div className="absolute bottom-10 left-10 h-px w-1/3 bg-white/10" />
           <div className="absolute top-1/2 left-0 h-[200px] w-[200px] -translate-y-1/2 rounded-full bg-white/5 blur-[100px]" />
         </motion.div>
       )}

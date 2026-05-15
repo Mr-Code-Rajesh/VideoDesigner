@@ -15,9 +15,9 @@ export const FooterBrand: React.FC = () => {
         <div className="h-6 w-6 bg-white rounded-full flex items-center justify-center">
           <div className="h-2 w-2 bg-black rounded-full" />
         </div>
-        <span className="font-bold text-2xl text-white tracking-tighter uppercase">CreativeNex</span>
+        <span className="font-bold text-2xl text-white tracking-tighter uppercase">CR7 Studio</span>
       </motion.div>
-      
+
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 0.8, y: 0 }}
@@ -26,14 +26,14 @@ export const FooterBrand: React.FC = () => {
       >
         “We create cinematic visuals that make brands unforgettable.”
       </motion.p>
-      
+
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 0.4, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-sm text-white font-light leading-relaxed"
       >
-        A premium production house dedicated to storytelling, 
+        A premium production house dedicated to storytelling,
         visual excellence, and technical precision.
       </motion.p>
     </div>

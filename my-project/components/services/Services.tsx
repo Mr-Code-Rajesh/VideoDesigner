@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { ServiceCard } from "./ServiceCard";
 
+
+
 const SERVICES = [
   {
     title: "Video Editing",
@@ -106,3 +108,6 @@ export const Services: React.FC = () => {
     </section>
   );
 };
+
+
+
