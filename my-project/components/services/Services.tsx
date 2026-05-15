@@ -2,13 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Video, 
-  Camera, 
-  Layers, 
-  Share2, 
-  TrendingUp, 
-  ShoppingBag 
+import {
+  Video,
+  Camera,
+  Layers,
+  Share2,
+  TrendingUp,
+  ShoppingBag
 } from "lucide-react";
 import { ServiceCard } from "./ServiceCard";
 
@@ -53,9 +53,9 @@ export const Services: React.FC = () => {
   return (
     <section id="services" className="relative py-32 px-6 overflow-hidden bg-black">
       {/* Background Decor */}
-      <div className={`absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/[0.02] rounded-full pointer-events-none ${intensity === "low" ? "blur-[80px]" : "blur-[150px]"}`} />
+      <div className={`absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/2 rounded-full pointer-events-none ${intensity === "low" ? "blur-[80px]" : "blur-[150px]"}`} />
       {intensity !== "low" && (
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/[0.01] rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/2 rounded-full blur-[120px] pointer-events-none" />
       )}
 
       <div className="max-w-7xl mx-auto">
@@ -66,12 +66,12 @@ export const Services: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="flex items-center gap-4 mb-4"
           >
-            <div className="h-[1px] w-8 bg-white/20" />
+            <div className="h-px w-8 bg-white/20" />
             <span className="font-mono text-[10px] tracking-[0.4em] text-white/40 uppercase">
               Our Capabilities
             </span>
           </motion.div>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export const Services: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-6 max-w-xl text-white/60 font-light leading-relaxed"
           >
-            We provide a comprehensive range of premium cinematic solutions designed to elevate brands 
+            We provide a comprehensive range of premium cinematic solutions designed to elevate brands
             from mere visibility to absolute presence.
           </motion.p>
         </div>
@@ -95,7 +95,7 @@ export const Services: React.FC = () => {
         {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service, index) => (
-            <ServiceCard 
+            <ServiceCard
               key={service.title}
               {...service}
               index={index}

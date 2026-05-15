@@ -13,11 +13,11 @@ interface ServiceCardProps {
 
 import { usePerformance } from "@/hooks/use-performance";
 
-export const ServiceCard: React.FC<ServiceCardProps> = ({ 
-  title, 
-  description, 
-  icon: Icon, 
-  index 
+export const ServiceCard: React.FC<ServiceCardProps> = ({
+  title,
+  description,
+  icon: Icon,
+  index
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true }}
-      className={`group relative min-h-[350px] cursor-none overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/[0.05] ${intensity !== "low" ? "backdrop-blur-sm shadow-xl" : ""}`}
+      className={`group relative min-h-[350px] cursor-none overflow-hidden rounded-3xl border border-white/5 bg-white/0 p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/5 ${intensity !== "low" ? "backdrop-blur-sm shadow-xl" : ""}`}
     >
       {/* Mouse Follow Glow - Only on Desktop */}
       {!isMobile && (
@@ -70,7 +70,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         <h3 className="mb-4 text-2xl font-bold tracking-tight text-white transition-colors duration-500 group-hover:text-white/90">
           {title}
         </h3>
-        
+
         <motion.p
           animate={{ opacity: isHovered || isMobile ? 0.8 : 0.4 }}
           className="text-sm leading-relaxed text-white/40 font-light"
@@ -80,11 +80,11 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
         {/* Expand Indicator */}
         <div className="mt-auto pt-8">
-          <div className="h-[1px] w-full bg-white/5 overflow-hidden">
+          <div className="h-px w-full bg-white/5 overflow-hidden">
             <motion.div
               animate={{ x: isHovered || isMobile ? "0%" : "-100%" }}
               transition={{ duration: 0.8, ease: "circOut" }}
-              className="h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              className="h-full w-full bg-linear-to-r from-transparent via-white/40 to-transparent"
             />
           </div>
           <div className="mt-4 flex items-center justify-between">
@@ -98,7 +98,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
       {/* Decorative Gradient Edge */}
       {intensity !== "low" && (
-        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       )}
     </motion.div>
   );
