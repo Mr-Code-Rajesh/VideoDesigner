@@ -10,23 +10,21 @@ const FilmLoader = dynamic(() => import("../loader/FilmLoader").then(mod => mod.
 const Navbar = dynamic(() => import("../navbar/Navbar").then(mod => mod.Navbar), { ssr: false });
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isMobile, intensity, isHydrated } = usePerformance();
+  const { isMobile, isHydrated } = usePerformance();
   const [isLoading, setIsLoading] = useState(true);
 
-  // Failsafe: Force hide loader after 5 seconds
+  // Failsafe: Force hide loader after 5 seconds if hydration finishes but loader hangs
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isLoading) {
-        console.warn("Loader failsafe triggered");
+    if (isHydrated) {
+      const timer = setTimeout(() => {
         setIsLoading(false);
-      }
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [isLoading]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isHydrated]);
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
-    // Wait for hydration and check if mobile
     if (!isHydrated || isMobile) return;
 
     let lenisInstance: any;
@@ -62,38 +60,31 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
     };
   }, [isMobile, isHydrated]);
 
-  // Prevent scroll during loading
+  // Handle body overflow
   useEffect(() => {
-    if (isLoading) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
+    if (isHydrated) {
+      document.body.style.overflow = isLoading ? "hidden" : "unset";
     }
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isLoading]);
+  }, [isLoading, isHydrated]);
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        {isLoading && (
-          <FilmLoader key="loader" onLoadingComplete={() => setIsLoading(false)} />
-        )}
-      </AnimatePresence>
+      {/* Navbar only shows after hydration and loading */}
+      {isHydrated && !isLoading && <Navbar />}
 
-      {isHydrated && !isLoading && (
-        <Navbar />
-      )}
-
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="grow"
+      <main 
+        className={`grow transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
       >
         {children}
-      </motion.main>
+      </main>
+
+      {/* Loader Overlay - Standard conditional render to avoid AnimatePresence Node Mismatch #300 */}
+      {isLoading && isHydrated && (
+        <FilmLoader onLoadingComplete={() => setIsLoading(false)} />
+      )}
     </>
   );
 };
