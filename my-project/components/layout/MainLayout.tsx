@@ -5,7 +5,6 @@ import { FilmLoader } from "../loader/FilmLoader";
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 import { Navbar } from "../navbar/Navbar";
-import { CustomCursor } from "./CustomCursor";
 import { usePerformance } from "@/hooks/use-performance";
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -74,10 +73,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       </AnimatePresence>
 
       {isHydrated && !isLoading && (
-        <>
-          <Navbar />
-          {!isMobile && <CustomCursor />}
-        </>
+        <Navbar />
       )}
 
       <motion.main
