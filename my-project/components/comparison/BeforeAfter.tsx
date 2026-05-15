@@ -3,8 +3,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ComparisonSlider } from "./ComparisonSlider";
+import { usePerformance } from "@/hooks/use-performance";
 
 export const BeforeAfter: React.FC = () => {
+  const { intensity } = usePerformance();
+
   return (
     <section className="relative py-32 px-6 bg-black overflow-hidden">
       {/* Background Decor */}
@@ -76,8 +79,10 @@ export const BeforeAfter: React.FC = () => {
             afterImage="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           />
           
-          {/* Subtle Outer Glow */}
-          <div className="absolute inset-0 -z-10 bg-white/5 blur-[100px] opacity-0 transition-opacity duration-1000 group-hover:opacity-100" />
+          {/* Subtle Outer Glow - Only on higher intensity */}
+          {intensity !== "low" && (
+            <div className="absolute inset-0 -z-10 bg-white/5 blur-[100px] opacity-0 transition-opacity duration-1000 group-hover:opacity-100" />
+          )}
         </motion.div>
       </div>
     </section>

@@ -2,8 +2,9 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { usePerformance } from "@/hooks/use-performance";
 
-const KEYWORDS = [
+const ALL_KEYWORDS = [
   { text: "Storytelling", size: "text-4xl md:text-6xl", top: "15%", left: "10%", speed: 0.05 },
   { text: "Cinematic", size: "text-5xl md:text-8xl", top: "40%", left: "30%", speed: 0.08 },
   { text: "Viral", size: "text-3xl md:text-5xl", top: "20%", left: "70%", speed: 0.04 },
@@ -14,7 +15,12 @@ const KEYWORDS = [
 ];
 
 export const CreativeDNA: React.FC = () => {
+  const { isMobile, intensity } = usePerformance();
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Reduce keywords on mobile
+  const KEYWORDS = isMobile ? ALL_KEYWORDS.slice(0, 4) : ALL_KEYWORDS;
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -27,7 +33,7 @@ export const CreativeDNA: React.FC = () => {
   const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     const { left, top, width, height } = containerRef.current.getBoundingClientRect();
     const x = (e.clientX - left) / width - 0.5;
     const y = (e.clientY - top) / height - 0.5;
@@ -54,6 +60,7 @@ export const CreativeDNA: React.FC = () => {
             x: useTransform(springX, (val) => val * word.speed * 5),
             y: useTransform(springY, (val) => val * word.speed * 5),
             opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.3, 0.1]),
+            willChange: "transform, opacity",
           }}
           className={`absolute font-bold tracking-tighter text-white select-none whitespace-nowrap ${word.size}`}
         >
@@ -98,17 +105,19 @@ export const CreativeDNA: React.FC = () => {
       </div>
 
       {/* Mouse Glow Follower */}
-      <motion.div
-        style={{
-          x: springX,
-          y: springY,
-          translateX: "-50%",
-          translateY: "-50%",
-          left: "50%",
-          top: "50%",
-        }}
-        className="fixed top-0 left-0 w-[400px] h-[400px] bg-white/[0.03] rounded-full blur-[120px] pointer-events-none mix-blend-overlay z-0"
-      />
+      {!isMobile && (
+        <motion.div
+          style={{
+            x: springX,
+            y: springY,
+            translateX: "-50%",
+            translateY: "-50%",
+            left: "50%",
+            top: "50%",
+          }}
+          className="fixed top-0 left-0 w-[400px] h-[400px] bg-white/[0.03] rounded-full blur-[120px] pointer-events-none mix-blend-overlay z-0"
+        />
+      )}
 
       <style jsx>{`
         .outline-text {

@@ -2,10 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { usePerformance } from "@/hooks/use-performance";
+import { useInView } from "react-intersection-observer";
 
 export const Waveform: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const bars = Array.from({ length: 40 });
+  const { intensity, isMobile } = usePerformance();
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+
+  const barCount = isMobile ? 20 : 40;
+  const bars = Array.from({ length: barCount });
 
   useEffect(() => {
     setMounted(true);
@@ -16,16 +24,16 @@ export const Waveform: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 h-full w-full justify-center">
+    <div ref={ref} className="flex flex-col gap-2 h-full w-full justify-center">
       <div className="flex items-center justify-between gap-1 h-32">
-        {bars.map((_, i) => (
+        {inView && bars.map((_, i) => (
           <motion.div
             key={i}
             animate={{
-              height: [
-                `${Math.random() * 40 + 20}%`,
-                `${Math.random() * 80 + 20}%`,
-                `${Math.random() * 40 + 20}%`,
+              scaleY: [
+                0.2 + Math.random() * 0.4,
+                0.2 + Math.random() * 0.8,
+                0.2 + Math.random() * 0.4,
               ],
             }}
             transition={{
@@ -33,22 +41,30 @@ export const Waveform: React.FC = () => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-full bg-white/20 rounded-full"
+            className="w-full bg-white/20 rounded-full origin-bottom"
             style={{
               opacity: 0.2 + (i / bars.length) * 0.4,
+              willChange: "transform",
             }}
+          />
+        ))}
+        {!inView && bars.map((_, i) => (
+          <div 
+            key={i} 
+            className="w-full bg-white/20 rounded-full h-[30%]" 
+            style={{ opacity: 0.2 + (i / bars.length) * 0.4 }}
           />
         ))}
       </div>
       <div className="flex items-center justify-between gap-1 h-32 scale-y-[-1] opacity-30">
-        {bars.map((_, i) => (
+        {inView && bars.map((_, i) => (
           <motion.div
             key={i}
             animate={{
-              height: [
-                `${Math.random() * 20 + 10}%`,
-                `${Math.random() * 40 + 10}%`,
-                `${Math.random() * 20 + 10}%`,
+              scaleY: [
+                0.1 + Math.random() * 0.2,
+                0.1 + Math.random() * 0.4,
+                0.1 + Math.random() * 0.2,
               ],
             }}
             transition={{
@@ -56,8 +72,12 @@ export const Waveform: React.FC = () => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-full bg-white/10 rounded-full"
+            className="w-full bg-white/10 rounded-full origin-bottom"
+            style={{ willChange: "transform" }}
           />
+        ))}
+        {!inView && bars.map((_, i) => (
+          <div key={i} className="w-full bg-white/10 rounded-full h-[20%]" />
         ))}
       </div>
     </div>

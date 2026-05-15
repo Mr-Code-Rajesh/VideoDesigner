@@ -5,9 +5,12 @@ import gsap from "gsap";
 import { motion } from "framer-motion";
 import { HeroButtons } from "./HeroButtons";
 
+import { usePerformance } from "@/hooks/use-performance";
+
 export const HeroContent: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const { intensity } = usePerformance();
   
   useEffect(() => {
     if (!headingRef.current) return;
@@ -17,7 +20,11 @@ export const HeroContent: React.FC = () => {
     
     gsap.fromTo(
       lines,
-      { y: 100, opacity: 0, rotateX: -45 },
+      { 
+        y: 100, 
+        opacity: 0, 
+        rotateX: intensity === "low" ? 0 : -45 
+      },
       {
         y: 0,
         opacity: 1,
@@ -26,9 +33,10 @@ export const HeroContent: React.FC = () => {
         stagger: 0.15,
         ease: "power4.out",
         delay: 0.5,
+        force3D: true,
       }
     );
-  }, []);
+  }, [intensity]);
 
   return (
     <div ref={containerRef} className="relative z-40 max-w-7xl mx-auto px-6 pt-12 pb-20 pointer-events-none">
@@ -38,16 +46,16 @@ export const HeroContent: React.FC = () => {
           className="text-5xl md:text-8xl font-bold text-white leading-[0.9] tracking-tighter"
         >
           <div className="overflow-hidden py-1">
-            <span className="split-line block">We Don’t Create</span>
+            <span className="split-line block" style={{ willChange: "transform, opacity" }}>We Don’t Create</span>
           </div>
           <div className="overflow-hidden py-1">
-            <span className="split-line block">Content.</span>
+            <span className="split-line block" style={{ willChange: "transform, opacity" }}>Content.</span>
           </div>
           <div className="overflow-hidden py-1 text-white/40">
-            <span className="split-line block">We Create Brand</span>
+            <span className="split-line block" style={{ willChange: "transform, opacity" }}>We Create Brand</span>
           </div>
           <div className="overflow-hidden py-1 text-white/40">
-            <span className="split-line block">Presence.</span>
+            <span className="split-line block" style={{ willChange: "transform, opacity" }}>Presence.</span>
           </div>
         </h1>
 

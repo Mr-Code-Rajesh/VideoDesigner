@@ -13,6 +13,8 @@ interface ReelCardProps {
   views: string;
 }
 
+import { usePerformance } from "@/hooks/use-performance";
+
 export const ReelCard: React.FC<ReelCardProps> = ({ 
   title, 
   category, 
@@ -21,6 +23,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const { intensity, isMobile } = usePerformance();
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
@@ -28,12 +31,12 @@ export const ReelCard: React.FC<ReelCardProps> = ({
   // Auto-play/pause based on viewport
   useEffect(() => {
     if (!videoRef.current) return;
-    if (inView && isHovered) {
+    if (inView && (isHovered || isMobile)) { // Auto-play on mobile when in view
       videoRef.current.play().catch(() => {});
     } else {
       videoRef.current.pause();
     }
-  }, [inView, isHovered]);
+  }, [inView, isHovered, isMobile]);
 
   return (
     <motion.div
@@ -62,12 +65,12 @@ export const ReelCard: React.FC<ReelCardProps> = ({
       
       {/* Hover Overlay */}
       <AnimatePresence>
-        {!isHovered && (
+        {!isHovered && !isMobile && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]"
+            className="absolute inset-0 flex items-center justify-center bg-black/20" // Removed backdrop-blur for performance
           >
             <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-md">
               <Play fill="white" className="ml-1 text-white" size={24} />
@@ -89,7 +92,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
             {title}
           </h3>
           
-          <div className="flex items-center gap-4 mt-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          <div className={`flex items-center gap-4 mt-4 transition-opacity duration-500 ${isHovered || isMobile ? "opacity-100" : "opacity-0"}`}>
             <div className="flex items-center gap-1">
               <Eye size={12} className="text-white/60" />
               <span className="font-mono text-[8px] text-white/60">{views}</span>
@@ -102,11 +105,13 @@ export const ReelCard: React.FC<ReelCardProps> = ({
         </motion.div>
       </div>
 
-      {/* Glow Edge Effect on Hover */}
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="absolute inset-[-1px] rounded-2xl border border-white/20" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent" />
-      </div>
+      {/* Glow Edge Effect on Hover - Only on High Intensity */}
+      {intensity === "high" && (
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          <div className="absolute inset-[-1px] rounded-2xl border border-white/20" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent" />
+        </div>
+      )}
     </motion.div>
   );
 };

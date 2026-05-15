@@ -8,11 +8,14 @@ import { CTAButton } from "./CTAButton";
 import { MobileMenu } from "./MobileMenu";
 import { Menu } from "lucide-react";
 
+import { usePerformance } from "@/hooks/use-performance";
+
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { intensity } = usePerformance();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -51,12 +54,12 @@ export const Navbar: React.FC = () => {
         animate={{ 
           y: isHidden ? -100 : 0,
           backgroundColor: isScrolled ? "rgba(0, 0, 0, 0.6)" : "rgba(0, 0, 0, 0)",
-          backdropFilter: isScrolled ? "blur(12px)" : "blur(0px)",
+          backdropFilter: isScrolled && intensity !== "low" ? "blur(12px)" : "blur(0px)",
           borderBottomColor: isScrolled ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0)",
           height: isScrolled ? "70px" : "90px"
         }}
         transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-        className="fixed top-0 left-0 z-50 flex w-full items-center border-b px-6 lg:px-12 transition-[height]"
+        className="fixed top-0 left-0 z-50 flex w-full items-center border-b px-6 lg:px-12"
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <NavbarLogo />

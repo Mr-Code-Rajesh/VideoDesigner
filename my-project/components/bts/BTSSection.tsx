@@ -3,8 +3,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BTSGrid } from "./BTSGrid";
+import { usePerformance } from "@/hooks/use-performance";
 
 export const BTSSection: React.FC = () => {
+  const { intensity } = usePerformance();
+
   return (
     <section id="bts" className="relative py-32 px-6 bg-black overflow-hidden">
       {/* Background Decor - Timeline Film Strip */}
@@ -49,7 +52,7 @@ export const BTSSection: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-8 border border-white/5 bg-white/[0.02] p-6 rounded-2xl backdrop-blur-md"
+            className={`flex items-center gap-8 border border-white/5 bg-white/[0.02] p-6 rounded-2xl shadow-xl ${intensity !== "low" ? "backdrop-blur-md" : ""}`}
           >
             <div className="text-center">
               <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mb-1">Status</p>

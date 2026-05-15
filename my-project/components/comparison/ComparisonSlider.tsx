@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
+import { usePerformance } from "@/hooks/use-performance";
 
 interface ComparisonSliderProps {
   beforeImage: string;
@@ -14,6 +16,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
 }) => {
   const [isResizing, setIsResizing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { intensity, isMobile } = usePerformance();
   
   // Percent position of the slider (0 to 100)
   const position = useMotionValue(50);
@@ -65,10 +68,12 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
       onTouchStart={onMouseDown}
     >
       {/* After Image (Background) */}
-      <img
+      <Image
         src={afterImage}
         alt="After"
-        className="absolute inset-0 h-full w-full object-cover"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover"
       />
 
       {/* Before Image (Clipping Layer) */}
@@ -76,10 +81,12 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
         style={{ clipPath }}
         className="absolute inset-0 z-10 h-full w-full overflow-hidden"
       >
-        <img
+        <Image
           src={beforeImage}
           alt="Before"
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
         />
       </motion.div>
 
@@ -88,7 +95,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
         style={{ left: `${springPosition.get()}%` }}
         className="absolute inset-y-0 z-20 w-[2px] bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)]"
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-md shadow-2xl">
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/40 shadow-2xl ${intensity !== "low" ? "backdrop-blur-md" : ""}`}>
           <div className="flex gap-1">
             <div className="h-3 w-[1px] bg-white/60" />
             <div className="h-3 w-[1px] bg-white/60" />
@@ -98,10 +105,10 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
 
       {/* Labels */}
       <div className="pointer-events-none absolute inset-x-0 bottom-8 z-30 flex justify-between px-8">
-        <div className="rounded-full border border-white/10 bg-black/20 px-4 py-1.5 backdrop-blur-md">
+        <div className={`rounded-full border border-white/10 bg-black/20 px-4 py-1.5 ${intensity !== "low" ? "backdrop-blur-md" : ""}`}>
           <span className="font-mono text-[8px] tracking-[0.3em] text-white/60 uppercase">Raw Footage</span>
         </div>
-        <div className="rounded-full border border-white/10 bg-white/10 px-4 py-1.5 backdrop-blur-md">
+        <div className={`rounded-full border border-white/10 bg-white/10 px-4 py-1.5 ${intensity !== "low" ? "backdrop-blur-md" : ""}`}>
           <span className="font-mono text-[8px] tracking-[0.3em] text-white uppercase">Color Graded</span>
         </div>
       </div>

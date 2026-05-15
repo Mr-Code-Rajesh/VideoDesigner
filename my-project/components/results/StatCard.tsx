@@ -14,6 +14,8 @@ interface StatCardProps {
   index: number;
 }
 
+import { usePerformance } from "@/hooks/use-performance";
+
 export const StatCard: React.FC<StatCardProps> = ({ 
   label, 
   value, 
@@ -22,6 +24,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   description,
   index 
 }) => {
+  const { intensity, isMobile } = usePerformance();
   const { ref, inView } = useInView({
     threshold: 0.5,
     triggerOnce: true,
@@ -34,11 +37,11 @@ export const StatCard: React.FC<StatCardProps> = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="relative flex flex-col items-center justify-center p-12 text-center rounded-[40px] border border-white/5 bg-white/[0.02] backdrop-blur-md overflow-hidden group"
+      className={`relative flex flex-col items-center justify-center p-12 text-center rounded-[40px] border border-white/5 bg-white/[0.02] shadow-xl overflow-hidden group ${intensity !== "low" ? "backdrop-blur-md" : ""}`}
     >
-      {/* Background Pulse Glow */}
+      {/* Background Pulse Glow - Reduced intensity for performance */}
       <motion.div
-        animate={{
+        animate={intensity === "low" ? {} : {
           scale: [1, 1.2, 1],
           opacity: [0.05, 0.1, 0.05],
         }}
@@ -47,7 +50,7 @@ export const StatCard: React.FC<StatCardProps> = ({
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute inset-0 bg-white rounded-full blur-[100px] pointer-events-none"
+        className={`absolute inset-0 bg-white rounded-full pointer-events-none ${intensity === "low" ? "opacity-[0.03] blur-[40px]" : "blur-[100px]"}`}
       />
 
       <div className="relative z-10">
@@ -75,8 +78,10 @@ export const StatCard: React.FC<StatCardProps> = ({
         </p>
       </div>
 
-      {/* Decorative Border Glow */}
-      <div className="absolute inset-0 border border-white/10 rounded-[40px] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+      {/* Decorative Border Glow - Only on higher intensity */}
+      {intensity !== "low" && (
+        <div className="absolute inset-0 border border-white/10 rounded-[40px] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+      )}
     </motion.div>
   );
 };

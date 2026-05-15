@@ -45,12 +45,18 @@ const SERVICES = [
   }
 ];
 
+import { usePerformance } from "@/hooks/use-performance";
+
 export const Services: React.FC = () => {
+  const { intensity } = usePerformance();
+
   return (
     <section id="services" className="relative py-32 px-6 overflow-hidden bg-black">
       {/* Background Decor */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/[0.01] rounded-full blur-[120px] pointer-events-none" />
+      <div className={`absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/[0.02] rounded-full pointer-events-none ${intensity === "low" ? "blur-[80px]" : "blur-[150px]"}`} />
+      {intensity !== "low" && (
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/[0.01] rounded-full blur-[120px] pointer-events-none" />
+      )}
 
       <div className="max-w-7xl mx-auto">
         <div className="mb-20">

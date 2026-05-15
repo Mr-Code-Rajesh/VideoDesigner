@@ -6,13 +6,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 import { Navbar } from "../navbar/Navbar";
 import { CustomCursor } from "./CustomCursor";
+import { usePerformance } from "@/hooks/use-performance";
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isMobile, intensity } = usePerformance();
   const [isLoading, setIsLoading] = useState(true);
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
-    const lenis = new Lenis();
+    // Disable smooth scroll on touch devices to improve performance
+    if (isMobile) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    });
     
     function raf(time: number) {
       lenis.raf(time);
@@ -24,7 +38,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [isMobile]);
 
   // Prevent scroll during loading
   useEffect(() => {
@@ -49,7 +63,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       {!isLoading && (
         <>
           <Navbar />
-          <CustomCursor />
+          {!isMobile && <CustomCursor />}
         </>
       )}
 
