@@ -23,7 +23,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const { intensity, isMobile } = usePerformance();
+  const { intensity, isMobile, isHydrated } = usePerformance();
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
@@ -31,7 +31,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
   // Auto-play/pause based on viewport
   useEffect(() => {
     if (!videoRef.current) return;
-    if (inView && (isHovered || isMobile)) { // Auto-play on mobile when in view
+    if (inView && (isHovered || (isHydrated && isMobile))) { // Auto-play on mobile when in view
       videoRef.current.play().catch(() => {});
     } else {
       videoRef.current.pause();
@@ -65,7 +65,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
       
       {/* Hover Overlay */}
       <AnimatePresence>
-        {!isHovered && !isMobile && (
+        {!isHovered && (!isHydrated || !isMobile) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -92,7 +92,7 @@ export const ReelCard: React.FC<ReelCardProps> = ({
             {title}
           </h3>
           
-          <div className={`flex items-center gap-4 mt-4 transition-opacity duration-500 ${isHovered || isMobile ? "opacity-100" : "opacity-0"}`}>
+          <div className={`flex items-center gap-4 mt-4 transition-opacity duration-500 ${isHovered || (isHydrated && isMobile) ? "opacity-100" : "opacity-0"}`}>
             <div className="flex items-center gap-1">
               <Eye size={12} className="text-white/60" />
               <span className="font-mono text-[8px] text-white/60">{views}</span>

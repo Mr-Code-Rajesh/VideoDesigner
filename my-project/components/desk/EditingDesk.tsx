@@ -18,7 +18,7 @@ import {
 import { usePerformance } from "@/hooks/use-performance";
 
 export const EditingDesk: React.FC = () => {
-  const { intensity, isMobile } = usePerformance();
+  const { intensity, isMobile, isHydrated } = usePerformance();
 
   return (
     <section id="desk" className="relative py-32 px-6 bg-black overflow-hidden">
@@ -54,7 +54,7 @@ export const EditingDesk: React.FC = () => {
           {/* Top Row: Browser + Preview + Scopes */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[500px]">
             {/* Project Browser */}
-            {!isMobile && (
+            {isHydrated && !isMobile && (
               <div className="lg:col-span-3 bg-zinc-950/50 rounded-2xl border border-white/5 p-4 flex flex-col">
                 <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/5">
                   <span className="font-mono text-[10px] text-white/40 uppercase">Media Pool</span>
@@ -77,12 +77,12 @@ export const EditingDesk: React.FC = () => {
             )}
 
             {/* Video Preview */}
-            <div className={`${isMobile ? "col-span-1" : "lg:col-span-6"}`}>
+            <div className={`${isHydrated && isMobile ? "col-span-1" : "lg:col-span-6"}`}>
               <VideoPreview />
             </div>
 
             {/* Audio Scopes / Waveform */}
-            {!isMobile && (
+            {isHydrated && !isMobile && (
               <div className="lg:col-span-3 bg-zinc-950/50 rounded-2xl border border-white/5 p-6 flex flex-col items-center justify-center">
                 <span className="font-mono text-[10px] text-white/40 uppercase mb-4 self-start">Audio Meter</span>
                 <Waveform />

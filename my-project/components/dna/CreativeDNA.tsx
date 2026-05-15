@@ -15,11 +15,11 @@ const ALL_KEYWORDS = [
 ];
 
 export const CreativeDNA: React.FC = () => {
-  const { isMobile, intensity } = usePerformance();
+  const { isMobile, intensity, isHydrated } = usePerformance();
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Reduce keywords on mobile
-  const KEYWORDS = isMobile ? ALL_KEYWORDS.slice(0, 4) : ALL_KEYWORDS;
+  // Reduce keywords on mobile - wait for hydration to avoid mismatch
+  const KEYWORDS = isHydrated && isMobile ? ALL_KEYWORDS.slice(0, 4) : ALL_KEYWORDS;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -105,7 +105,7 @@ export const CreativeDNA: React.FC = () => {
       </div>
 
       {/* Mouse Glow Follower */}
-      {!isMobile && (
+      {isHydrated && !isMobile && (
         <motion.div
           style={{
             x: springX,

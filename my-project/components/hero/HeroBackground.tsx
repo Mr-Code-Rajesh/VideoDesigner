@@ -8,7 +8,7 @@ import { usePerformance } from "@/hooks/use-performance";
 
 export const HeroBackground: React.FC = () => {
   const { scrollY } = useScroll();
-  const { intensity, isMobile } = usePerformance();
+  const { intensity, isMobile, isHydrated } = usePerformance();
   
   // Parallax + Ken Burns combined
   const y = useTransform(scrollY, [0, 500], [0, 100]);
@@ -20,7 +20,7 @@ export const HeroBackground: React.FC = () => {
         initial={{ scale: 1.1 }}
         animate={{ 
           scale: [1.1, 1.18, 1.1],
-          x: isMobile ? 0 : ["-1%", "1%", "-1%"], // Disable X movement on mobile for performance
+          x: (isHydrated && isMobile) ? 0 : ["-1%", "1%", "-1%"], // Disable X movement on mobile for performance
         }}
         transition={{ 
           duration: 40, 

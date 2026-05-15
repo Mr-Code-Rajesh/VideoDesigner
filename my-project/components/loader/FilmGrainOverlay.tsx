@@ -4,9 +4,9 @@ import React from "react";
 import { usePerformance } from "@/hooks/use-performance";
 
 export const FilmGrainOverlay: React.FC = () => {
-  const { intensity } = usePerformance();
+  const { intensity, isHydrated } = usePerformance();
 
-  if (intensity === "low") return null;
+  if (!isHydrated || intensity === "low") return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">

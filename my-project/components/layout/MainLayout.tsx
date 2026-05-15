@@ -9,7 +9,7 @@ import { CustomCursor } from "./CustomCursor";
 import { usePerformance } from "@/hooks/use-performance";
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isMobile, intensity } = usePerformance();
+  const { isMobile, intensity, isHydrated } = usePerformance();
   const [isLoading, setIsLoading] = useState(true);
 
   // Failsafe: Force hide loader after 5 seconds
@@ -25,8 +25,8 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
-    // Disable smooth scroll on touch devices to improve performance
-    if (isMobile) return;
+    // Wait for hydration and check if mobile
+    if (!isHydrated || isMobile) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -38,18 +38,20 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       touchMultiplier: 2,
       infinite: false,
     });
-
+    
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-
+    rafId = requestAnimationFrame(raf);
+    
     return () => {
       lenis.destroy();
+      cancelAnimationFrame(rafId);
     };
-  }, [isMobile]);
+  }, [isMobile, isHydrated]);
 
   // Prevent scroll during loading
   useEffect(() => {
@@ -71,7 +73,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         )}
       </AnimatePresence>
 
-      {!isLoading && (
+      {isHydrated && !isLoading && (
         <>
           <Navbar />
           {!isMobile && <CustomCursor />}

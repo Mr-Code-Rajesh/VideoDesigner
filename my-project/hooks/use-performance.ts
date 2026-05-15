@@ -7,6 +7,7 @@ export interface PerformanceLevel {
   isMobile: boolean;
   reducedMotion: boolean;
   intensity: "low" | "medium" | "high";
+  isHydrated: boolean;
 }
 
 export const usePerformance = (): PerformanceLevel => {
@@ -15,6 +16,7 @@ export const usePerformance = (): PerformanceLevel => {
     isMobile: false,
     reducedMotion: false,
     intensity: "high",
+    isHydrated: false,
   });
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export const usePerformance = (): PerformanceLevel => {
         isMobile,
         reducedMotion,
         intensity,
+        isHydrated: true,
       });
     };
 
